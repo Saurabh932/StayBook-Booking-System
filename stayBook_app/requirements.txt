@@ -1,0 +1,8 @@
+fastapi
+pydantic
+pydantic_settings
+uvicorn
+sqlmodel
+sqlalchemy
+jinja2
+psycopg
