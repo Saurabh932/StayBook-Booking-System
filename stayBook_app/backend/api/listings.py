@@ -17,7 +17,7 @@ list_service = ListingService()
 
 
 list_router = APIRouter(prefix="/listings", tags=["listings"])
-templates = Jinja2Templates("frontend/pages")
+templates = Jinja2Templates(directory="frontend/pages")
 
 
 """
