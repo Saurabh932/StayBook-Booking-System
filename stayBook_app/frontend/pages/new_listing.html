@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StayBook | Create Listings</title>
-</head>
-<body>
+<div id="content"></div>
+
+<title>StayBook | Create Listings</title>
+
+<div id="page-content">
 
     <h1>Create a new listing </h1>
 
@@ -40,6 +37,12 @@
         <button type="submit">Create</button>
     </form>
 
-    <script src="/assets/js/new_listing.js"></script>
-</body>
-</html>
+</div>
+
+<script type="module">
+    import { loadLayout } from "../assets/js/script.js";
+
+    loadLayout("page-content");
+
+    import("../assets/js/new_listing.js")
+</script>

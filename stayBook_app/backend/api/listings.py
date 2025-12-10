@@ -63,7 +63,7 @@ async def update_listing(list_id: uuid.UUID, payload: UpateListing, session: Asy
 """
     Deleting a Listing
 """
-@list_router.delete("/{list_id}", response_model=ReadListing, status_code=status.HTTP_200_OK)
+@list_router.delete("/{list_id}", status_code=status.HTTP_200_OK)
 async def delete_listing(list_id: uuid.UUID, session: AsyncSession = Depends(get_session)):
     deleting = await list_service.delete(list_id, session)
     

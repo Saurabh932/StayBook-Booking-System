@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StayBook | Edit Listings</title>
-</head>
-<body>
+<title>StayBook | Edit Listings</title>
+
+<div id="layout"></div>
+
+<div id="page-content" style="display: none;">
 
     <h1>Edit/Update the listing </h1>
 
@@ -38,7 +35,12 @@
         <br><br>
         <button type="submit">Update</button>
     </form>
+</div>
 
-    <script src="/assets/js/edit_listing.js"></script>
-</body>
-</html>
+<script type="module">
+    import { loadLayout } from "../assets/js/script.js";
+
+    loadLayout("page-content")
+
+    import("../assets/js/edit_listing.js")
+</script>

@@ -67,11 +67,22 @@ async function deleteListing(){
     const param = new URLSearchParams(window.location.search);
     const id = param.get("id");
 
-    btn.addEventListener("click", () => {
+    btn.addEventListener("click", async () => {
         if (!id){
             console.error("No ID present in URL");
             return
         }
-        const response = fetch(``) 
-    })
-}
+        const response = await fetch(`http://127.0.0.1:8000/listings/${id}`, {method:"DELETE"})
+        
+        if (!response.ok){
+            console.log("Error while deleting the listing")
+            alert("Error while deleting.");
+            return;
+        };
+
+        alert("Listing Deleted!!")
+        window.location.href = "/";
+    });
+};
+
+deleteListing();
