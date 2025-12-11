@@ -6,6 +6,8 @@ async function listings() {
     const listings = await response.json();
     const ul = document.getElementById("listings");
 
+    ul.innerHTML = '';
+    
     listings.forEach(item => {
         const li = document.createElement("li");
         const a = document.createElement("a");
@@ -25,14 +27,14 @@ listings();
 // ==================================================
 // Create Button
 // ==================================================
-async function create_new_listing(){
-    const btn = document.getElementById("create-btn")
+// async function create_new_listing(){
+//     const btn = document.getElementById("create-btn")
 
-    if (btn){
-        btn.addEventListener("click", () =>{
-            window.location.href = "/new_listing.html";
-        })
-    }
-}
+//     if (btn){
+//         btn.addEventListener("click", () =>{
+//             window.location.href = "/new_listing.html";
+//         })
+//     }
+// }
 
-create_new_listing();
+// create_new_listing();

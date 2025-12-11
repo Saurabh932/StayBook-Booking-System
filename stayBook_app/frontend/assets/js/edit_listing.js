@@ -3,7 +3,10 @@ async function editListingPage() {
     const params = new URLSearchParams(window.location.search);
     const id = params.get("id");
 
-    if (!form) return;
+    if (!form) {
+        console.error("Form element not found after layout load.");
+        return;
+    }
     if (!id) {
         alert("No listing ID found");
         return;
@@ -57,4 +60,4 @@ async function editListingPage() {
     });
 }
 
-document.addEventListener("DOMContentLoaded", editListingPage);
+editListingPage();
