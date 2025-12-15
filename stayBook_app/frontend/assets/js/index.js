@@ -12,20 +12,22 @@ async function listings() {
                     const cardWrapper = document.createElement("div");
 
                                 cardWrapper.innerHTML = `
+                                <a href="/listing.html?id=${item.uid}" class="listing-link">
                                     <div class="card" style="width: 18rem;">
                                         <img 
                                             src="${item.image || 'https://via.placeholder.com/300x200'}" 
                                             class="card-img-top" 
                                             alt="${item.title}"
                                         >
-                                        <div class="card-body">
-                                            <h5 class="card-title">${item.title}</h5>
-                                            <p class="card-text">₹${item.price} / night</p>
-                                            <a href="/listing.html?id=${item.uid}" class="btn btn-primary">
-                                                View Listing
-                                            </a>
-                                        </div>
+                                        <div class="card-img-overlay"></div>
+                                            <div class="card-body">
+                                                <b><span class="card-title">${item.title}</span></b>
+                                                <p class="card-text" style="font-size: small;">
+                                                ₹${item.price} / night
+                                                </p>
+                                            </div>
                                     </div>
+                                </a>
                                 `;
 
                                 container.appendChild(cardWrapper);

@@ -23,11 +23,11 @@ async function listing_details(){
         const list_details = document.getElementById("list_details")
         list_details.innerHTML = `
                                 <ul>
-                                <li> <strong>Description: <strong> ${details.description ?? "N/A"}</li>
-                                <li> <strong>Image: <strong> ${details.image ?? "N/A"}</li>
-                                <li> <strong>Price: <strong> ${details.price ?? "N/A"}</li>
-                                <li> <strong>Location:<strong> ${details.location ?? "N/A"}</li>
-                                <li> <strong>Country: <strong> ${details.country ?? "N/A"}</li>
+                                <li>Description: ${details.description ?? "N/A"}</li>
+                                <li>Image: ${details.image ?? "N/A"}</li>
+                                <li>Price: ${details.price ?? "N/A"}</li>
+                                <li>Location ${details.location ?? "N/A"}</li>
+                                <li>Country: ${details.country ?? "N/A"}</li>
                                 </ul>
                                 `;
     }
