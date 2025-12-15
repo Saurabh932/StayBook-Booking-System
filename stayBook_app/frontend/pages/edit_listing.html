@@ -3,38 +3,52 @@
 <div id="layout"></div>
 
 <div id="page-content" style="display: none;">
+     <div class="row">
+        <div class="col-8 offset-2"> 
+            <br>
+            <h3>Edit/Update the listing </h3>
 
-    <h1>Edit/Update the listing </h1>
+            <br>
 
-    <h3><b>Note: </b>Make sure you fill correct details</h3>
-    
-    <form>
+            <!-- <h3><b>Note: </b>Make sure you fill correct details</h3> -->
+            
+            <form>
 
-        <strong>Title</strong><br>
-        <input type="text" name="title" placeholder="Enter title">
-        <br><br>
+                <div class="mb-3">
+                    <label class="form-label" >Title</label>
+                    <input type="text" name="title" class="form-control" placeholder="What's new somky thing">
+                </div>
 
-        <strong>Description</strong><br>
-        <textarea name="description" placeholder="Enter description"></textarea>
-        <br><br>
+                <div class="mb-3">
+                    <label class="form-label" >Description</label>
+                    <textarea name="description" class="form-control" placeholder="Chage Description"></textarea>
+                </div>
 
-        <strong>Image</strong><br>
-        <input type="text" name="image" placeholder="Enter image/url link">
-        <br><br>
+                <div class="mb-3">
+                    <label class="form-label" >Image</label>
+                    <input type="text" name="image" class="form-control" placeholder="New Image/URL link">
+                </div>
 
-        <strong>Number</strong><br>
-        <input type="number" name="price" placeholder="Enter price">
-        <br><br>
+                <div class="mb-3">
+                <label class="form-label" > Number</label>
+                    <input type="number" name="price" class="form-control" placeholder="1500">
+                </div>
 
-        <strong>Location</strong><br>
-        <input type="text" name="location" placeholder="Enter location">
-        <br><br>
+                <div class="row">
+                    <div class="mb-3 col-md-4">
+                        <label class="form-label" >Location</label> 
+                        <input type="text" name="location" class="form-control" placeholder="Nagpur, Maharashtra">
+                    </div>
 
-        <strong>Country</strong><br>
-        <input type="text" name="country" placeholder="Enter country">
-        <br><br>
-        <button type="submit">Update</button>
-    </form>
+                    <div class="mb-3 col-md-8">
+                        <label class="form-label" >Country</label>
+                        <input type="text" name="country" class="form-control" placeholder="Inda">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-dark edit-btn">Update</button>
+            </form>
+        </div>
+    </div>
 </div>
 
 <script type="module">

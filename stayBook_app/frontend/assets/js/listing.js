@@ -16,19 +16,32 @@ async function listing_details(){
         
         const details = await response.json()
 
-        const h1 = document.getElementById("title")
-        h1.textContent = details.title || "No title";
+        // const h1 = document.getElementById("title")
+        // h1.textContent = details.title || "No title";
 
         
         const list_details = document.getElementById("list_details")
         list_details.innerHTML = `
-                                <ul>
-                                <li>Description: ${details.description ?? "N/A"}</li>
-                                <li>Image: ${details.image ?? "N/A"}</li>
-                                <li>Price: ${details.price ?? "N/A"}</li>
-                                <li>Location ${details.location ?? "N/A"}</li>
-                                <li>Country: ${details.country ?? "N/A"}</li>
-                                </ul>
+                            <div class="col-6 offset-3 show-card">
+                                <div class="card">
+                                    <img src="${details.image ?? ""}"  class="card-img-top show-image" alt="listing_image">
+                                    <div class="card-body">
+                                        <p class="card-text">
+                                        <b>${details.title ?? "N/A"}</b>
+                                        <br>
+                                        ${details.description ?? "N/A"}
+                                        <br>
+                                        ${details.price ?? "N/A"}
+                                        <br>
+                                        ${details.location ?? "N/A"}
+                                        <br>
+                                        ${details.country ?? "N/A"}
+                                        <br>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                                 
                                 `;
     }
     catch{

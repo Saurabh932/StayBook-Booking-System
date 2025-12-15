@@ -23,7 +23,9 @@ print("ASSETS_DIR:", ASSETS_DIR)
 async def lifespan(app: FastAPI):
     print("<< Starting StayBook Application >>")
     await init_db()
+    print("DB INIT: start")
     yield
+    print("DB INIT: end")
     print(" xx Shutting down StayBook Application")
 
 

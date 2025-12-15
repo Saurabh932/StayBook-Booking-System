@@ -5,8 +5,8 @@ body {
     min-height: 100vh;
 }
 
-.page-wrapper {
-    flex: 1 0 auto;
+.container {
+    flex: 1;
 }
 
 .form-label{
@@ -104,4 +104,22 @@ body {
 .add-btn{
     background-color: #fe424d !important;
     border: none !important;
+}
+
+
+/* Edit Listing */
+.edit-btn{
+    background-color: #fe424d !important;
+    border: none !important;
+}
+
+
+/* Listings */
+.show-image {
+    height: 30vh;
+}
+
+.show-card {
+    padding-left: 0;
+    padding-right: 0;;
 }
