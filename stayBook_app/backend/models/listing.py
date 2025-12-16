@@ -9,6 +9,6 @@ class Listing(SQLModel , table=True):
     title: str = Field(...)
     description: str = Field(...)
     image: str = Field(...)
-    price: str = Field(...)
+    price: int = Field(...)
     location: str = Field(...)
     country: str = Field(...)

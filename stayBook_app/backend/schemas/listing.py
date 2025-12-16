@@ -21,7 +21,7 @@ class CreateListing(BaseModel):
     country: str = None
     
     
-class UpateListing(BaseModel):
+class UpdateListing(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
     image: Optional[str] = None

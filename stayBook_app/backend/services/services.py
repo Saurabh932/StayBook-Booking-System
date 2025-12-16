@@ -5,7 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..db.session import get_session
 from ..models.listing import Listing
-from ..schemas.listing import ReadListing, CreateListing, UpateListing
+from ..schemas.listing import ReadListing, CreateListing, UpdateListing
+from ..core.exception import ListingNotFoundError
 
 class ListingService:
     
@@ -52,7 +53,7 @@ class ListingService:
         listing = result.scalars().first()
         
         if not listing:
-            return {"error":"Listing not present"}
+            raise ListingNotFoundError()
         
         return listing
     
@@ -60,13 +61,13 @@ class ListingService:
     """
         Updating a Listing
     """    
-    async def update(self, list_uid: uuid.UUID, payload:UpateListing, session: AsyncSession):
+    async def update(self, list_uid: uuid.UUID, payload:UpdateListing, session: AsyncSession):
         statement = select(Listing).where(Listing.uid == list_uid)
         result = await session.execute(statement)
         listing = result.scalar_one_or_none()
         
         if not listing:
-            return {"error":"Listing does not exist"}
+            raise ListingNotFoundError()
         
         for field, value in payload.model_dump(exclude_unset=True).items():
             if field=="image" and value is not None:
@@ -90,7 +91,7 @@ class ListingService:
         listing = result.scalar_one_or_none()
         
         if not listing:
-            return {"error":"Listing not exist"}
+            raise ListingNotFoundError()
         
         await session.delete(listing)
         await session.commit()

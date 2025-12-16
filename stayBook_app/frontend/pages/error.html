@@ -1,0 +1,31 @@
+<title>StayBook | Page Not Found</title>
+
+<div id="layout"></div>
+
+<div id="page-content" style="display:none;">
+    <div class="row">
+        <div class="col-6 offset-3">
+
+            <div class="alert alert-danger mt-4" role="alert">
+                <h4 class="alert-heading">Page not found</h4>
+                <p>
+                    The page you are trying to access does not exist or has been moved.
+                </p>
+                <hr>
+                <p class="mb-0">
+                    Please check the URL or go back to home.
+                </p>
+            </div>
+
+            <a href="/" class="btn btn-dark mt-3">
+                Go back to Home
+            </a>
+
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import { loadLayout } from "../assets/js/script.js";
+    loadLayout("page-content");
+</script>

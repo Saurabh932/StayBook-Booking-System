@@ -1,8 +1,9 @@
 <div id="layout"></div>
 
-<title>StayBook | Create Listings</title>
 
 <div id="page-content" style="display: none;">
+    <title>StayBook | Create Listings</title>
+
 
     <div class="row">
         <div class="col-8 offset-2"> 
@@ -11,40 +12,52 @@
 
             <!-- <h3><b>Note: </b>Make sure you fill all the fields</h3> -->
             
-            <form method="POST" action="/listings">
+            <form method="POST" action="/listings" novalidate class="needs-validation">
 
                 <div class="mb-3">
                     <label class="form-label" >Title</label>
                     <input type="text" class="form-control" name="title" placeholder="Use a smoky title" required>
+                    <div class="valid-feedback">Title looks good</div>
+                    <div class="invalid-feedback">Enter valid title</div>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label" >Description</label>
                     <textarea name="description" class="form-control" placeholder="Tell us about you property"  required ></textarea>
+                    <div class="valid-feedback">Description sounds good</div>
+                    <div class="invalid-feedback">Enter valid description</div>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label" >Image</label>
                     <input type="text" name="image" class="form-control" placeholder="Image/URL link" required>
+                    <div class="valid-feedback">Image looks catchy</div>
+                    <div class="invalid-feedback">Give valid image link</div>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label" >Number</label>
+                    <label class="form-label" >Price</label>
                     <input type="number" name="price" class="form-control" placeholder="1200" required >
+                    <div class="valid-feedback">Price is good</div>
+                    <div class="invalid-feedback">Enter valid price</div>
                 </div>
 
                 <div class="row">
                     <div class="mb-3 col-md-4">
                         <label class="form-label" >Location</label> 
                         <input type="text" name="location" class="form-control" placeholder="Nagpur, Maharashtra"  required>
+                        <div class="valid-feedback">Nice location</div>
+                        <div class="invalid-feedback">Enter valid location</div>
                     </div>
 
                     <div class="mb-3 col-md-8">
                         <label class="form-label" >Country</label>
                         <input type="text" name="country" class="form-control" placeholder="Inda"  required>
+                        <div class="valid-feedback">Nice country</div>
+                        <div class="invalid-feedback">Enter valid country</div>
                     </div>
                 </div>
-                <br><br>
+                <br>
                 <button type="submit" class="btn btn-dark add-btn">Create</button>
                 <br><br>
             </form>
@@ -57,5 +70,7 @@
 
     loadLayout("page-content");
 
-    import("../assets/js/new_listing.js")
+    import("../assets/js/bs-validation.js");
+    import("../assets/js/new_listing.js");
+
 </script>

@@ -1,10 +1,15 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
+from fastapi.exceptions import RequestValidationError
 from pathlib import Path
+
 from ..db.session import init_db
 from ..api.listings import list_router
-
+from ..core.exception import StayBookError
+from ..core.error_handler import staybook_exception_handler, generic_exception_handler, validation_exception_handler
+from ..middleware.logging import logging_middleware
+from ..middleware.not_found import not_found_middleware
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -30,6 +35,18 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="StayBook Application", lifespan=lifespan)
+
+# Middleware
+app.middleware("http")(logging_middleware)
+app.middleware("http")(not_found_middleware)
+
+
+# Exception Handlers
+app.add_exception_handler(StayBookError, staybook_exception_handler)
+app.add_exception_handler(RequestValidationError, validation_exception_handler)
+app.add_exception_handler(Exception, generic_exception_handler)
+
+
 
 app.include_router(list_router)
 

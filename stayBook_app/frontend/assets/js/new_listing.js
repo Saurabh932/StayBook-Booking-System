@@ -1,9 +1,9 @@
 async function handleNewListingSubmit(){
-    const form = document.querySelector("form")
+    const form = document.querySelector(".needs-validation")
 
     if (!form) return;
 
-    form.addEventListener("submit", async (event) => {
+    form.addEventListener("form:valid", async (event) => {
         event.preventDefault();
 
         // Collecting form data using FormData API

@@ -12,37 +12,49 @@
 
             <!-- <h3><b>Note: </b>Make sure you fill correct details</h3> -->
             
-            <form>
+            <form novalidate class="needs-validation">
 
                 <div class="mb-3">
                     <label class="form-label" >Title</label>
-                    <input type="text" name="title" class="form-control" placeholder="What's new somky thing">
+                    <input type="text" name="title" class="form-control" placeholder="What's new somky thing" required>
+                    <div class="valid-feedback">Title looks good</div>
+                    <div class="invalid-feedback">Enter valid title</div>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label" >Description</label>
                     <textarea name="description" class="form-control" placeholder="Chage Description"></textarea>
+                    <div class="valid-feedback">Description sounds good</div>
+                    <div class="invalid-feedback">Enter valid description</div>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label" >Image</label>
                     <input type="text" name="image" class="form-control" placeholder="New Image/URL link">
+                    <div class="valid-feedback">Image looks catchy</div>
+                    <div class="invalid-feedback">Give valid image link</div>
                 </div>
 
                 <div class="mb-3">
-                <label class="form-label" > Number</label>
-                    <input type="number" name="price" class="form-control" placeholder="1500">
+                <label class="form-label" > Price</label>
+                    <input type="number" name="price" class="form-control" placeholder="1500" required>
+                    <div class="valid-feedback">Price is good</div>
+                    <div class="invalid-feedback">Enter valid price</div>
                 </div>
 
                 <div class="row">
                     <div class="mb-3 col-md-4">
                         <label class="form-label" >Location</label> 
-                        <input type="text" name="location" class="form-control" placeholder="Nagpur, Maharashtra">
+                        <input type="text" name="location" class="form-control" placeholder="Nagpur, Maharashtra" required>
+                        <div class="valid-feedback">Nice location</div>
+                        <div class="invalid-feedback">Enter valid location</div>
                     </div>
 
                     <div class="mb-3 col-md-8">
                         <label class="form-label" >Country</label>
-                        <input type="text" name="country" class="form-control" placeholder="Inda">
+                        <input type="text" name="country" class="form-control" placeholder="Inda" required>
+                        <div class="valid-feedback">Nice country</div>
+                        <div class="invalid-feedback">Enter valid country</div>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-dark edit-btn">Update</button>
@@ -55,6 +67,7 @@
     import { loadLayout } from "../assets/js/script.js";
 
     await loadLayout("page-content");
-
+    
+    import("../assets/js/bs-validation.js");
     import("../assets/js/edit_listing.js")
 </script>
