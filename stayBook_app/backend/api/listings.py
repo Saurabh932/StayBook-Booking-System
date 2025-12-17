@@ -9,7 +9,7 @@ from sqlalchemy.ext.asyncio.session import AsyncSession
 
 from ..db.session import get_session
 from ..models.listing import Listing
-from ..schemas.listing import ReadListing, CreateListing, UpdateListing
+from ..schemas.listing import ReadListing, CreateListing, UpdateListing, ReadReview, CreateReview
 from ..services.services import ListingService
 
 
@@ -67,3 +67,12 @@ async def update_listing(list_id: uuid.UUID, payload: UpdateListing, session: As
 async def delete_listing(list_id: uuid.UUID, session: AsyncSession = Depends(get_session)):
     await list_service.delete(list_id, session)
     return {"message": f"Student deleted"}
+
+
+"""
+    Reviews 
+"""
+@list_router.post("/{list_id}/reviews", response_model=ReadReview, status_code=status.HTTP_201_CREATED)
+async def reviews(list_id: uuid.UUID, payload: CreateReview, session: AsyncSession = Depends(get_session)):
+    listing_review = await list_service.create_review(list_id, payload, session)
+    return listing_review

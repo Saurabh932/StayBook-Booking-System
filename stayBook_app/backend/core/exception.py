@@ -17,3 +17,9 @@ class ValidationError(StayBookError):
     status_code = 400
     error_type = "ValidationError"
     message = "Invalid input provided"
+    
+    
+class ReviewsNotFoundError(StayBookError):
+    status_code = 404
+    error_type = "ReviewsNotFoundError"
+    message = "Reviews not found"

@@ -72,9 +72,10 @@ body {
 
 .card-img-top{
     border-radius: 0.75rem !important;
-    height: 45vh;
+    height: 42.5vh;
     width: 100% !important;
     object-fit: cover !important;
+    /* box-shadow:; */
 }
 
 
@@ -116,7 +117,7 @@ body {
 
 /* Listings */
 .show-image {
-    height: 30vh;
+    height: 45vh;
 }
 
 .show-card {

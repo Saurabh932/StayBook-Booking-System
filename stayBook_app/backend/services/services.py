@@ -1,12 +1,13 @@
 import uuid
 
 from sqlmodel import select
+from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..db.session import get_session
-from ..models.listing import Listing
-from ..schemas.listing import ReadListing, CreateListing, UpdateListing
-from ..core.exception import ListingNotFoundError
+from ..models.listing import Listing, Reviews
+from ..schemas.listing import ReadListing, CreateListing, UpdateListing, ReadReview, CreateReview
+from ..core.exception import ListingNotFoundError, ReviewsNotFoundError
 
 class ListingService:
     
@@ -15,7 +16,7 @@ class ListingService:
         Viewing all Listings
     """
     async def view(self, session : AsyncSession):
-        statement = select(Listing)
+        statement = select(Listing).options(selectinload(Listing.reviews))
         listing = await session.execute(statement)
         return listing.scalars().all()
     
@@ -48,7 +49,7 @@ class ListingService:
         Searching a Listing
     """
     async def get_listing(self, list_uid: uuid.UUID, session: AsyncSession):
-        statement = select(Listing).where(Listing.uid == list_uid)
+        statement = select(Listing).where(Listing.uid == list_uid).options(selectinload(Listing.reviews))
         result = await session.execute(statement)
         listing = result.scalars().first()
         
@@ -96,3 +97,22 @@ class ListingService:
         await session.delete(listing)
         await session.commit()
         return {"message":"Delete successfull"}
+    
+    
+    """
+        Reviews Creation
+    """
+    async def create_review(self, list_uid: uuid.UUID, payload: CreateReview, session: AsyncSession):
+        listing = await session.get(Listing, list_uid)
+        
+        if not listing:
+            raise ListingNotFoundError()
+        
+
+        listing_reviews = Reviews(listing_uid=list_uid, comment=payload.comment, rating=payload.rating)
+        
+        session.add(listing_reviews)
+        await session.commit()
+        await session.refresh(listing_reviews)
+        
+        return listing_reviews

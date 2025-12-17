@@ -4,14 +4,14 @@
 <div id="page-content" style="display: none;">
     <div class="row">
         <div class="col-8 offset-3">
-            <h3>Listing Details</h3>
+            <h5 id="title" style="font-weight: 600; font-size: x-large;"></h5>
         </div>
 
-            <!-- <h5 id="title"></h5> -->
-
+            <!-- List detail section -->
             <div id="list_details"></div>
 
-    
+
+            <!-- Edit and Delete Button -->
             <div class="d-flex gap-3 mt-3">
                 <button type="button" id="edit-btn" class="btn btn-dark offset-3 edit-btn">
                     Edit
@@ -23,8 +23,38 @@
             </div>
             <br>
 
+
+            <!-- Review form section -->
+            <div class="row">
+                <div class="col-8 offset-3">
+                    <hr>
+                    <h4>Leave a Review</h4>
+                    <form>
+                        <div class="mb-3 mt-3">
+                            <label for="rating" class="form-label" >Rating</label>
+                            <input type="range" class="form-range" min="1" max="5" id="rating" required>
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label for="comment" class="form-label" >Comments</label>
+                            <textarea id="comment" cols="30" rows="5" class="form-control" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-outline-dark">Submit</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Reviews display section -->
+            <div class="row mt-4">
+                <div class="col-8 offset-3">
+                    <hr>
+                    <h4>Reviews</h4>
+                    <div id="reviews"></div>
+                </div>
+            </div>
+
+
     </div>
-    <br><br>
+    <br>
 </div>
 
 <script type="module">

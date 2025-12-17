@@ -1,6 +1,7 @@
-from typing import Optional
+from pydantic import BaseModel, Field
+from typing import List, Optional
+from datetime import datetime
 import uuid
-from pydantic import BaseModel, HttpUrl
 
 
 class LisitngModel(BaseModel):
@@ -28,10 +29,25 @@ class UpdateListing(BaseModel):
     price: Optional[int] = None
     location: str = None
     country: str = None
+        
+        
+class CreateReview(BaseModel):
+    comment: str = Field(..., min_length=3, max_length=100)
+    rating: int = Field(..., ge=1, le=5)
     
+    
+class ReadReview(CreateReview):
+    uid: uuid.UUID
+    listing_uid: uuid.UUID
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
 
 class ReadListing(LisitngModel):
-    uid : uuid.UUID
-    
+    uid: uuid.UUID
+    reviews: List[ReadReview] = []
+
     class Config:
-        from_attribute = True
+        from_attributes = True
