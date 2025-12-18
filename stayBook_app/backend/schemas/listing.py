@@ -4,38 +4,45 @@ from datetime import datetime
 import uuid
 
 
-class LisitngModel(BaseModel):
+# -----------------------------
+# Shared base (no relationships)
+# -----------------------------
+class ListingBase(BaseModel):
     title: str
     description: Optional[str] = None
     image: Optional[str] = None
     price: int
-    location: str = None
-    country: str = None
-    
+    location: Optional[str] = None
+    country: Optional[str] = None
 
-class CreateListing(BaseModel):
-    title: str
-    description: Optional[str] = None
-    image: Optional[str] = None
-    price: int
-    location: str = None
-    country: str = None
-    
-    
+
+# -----------------------------
+# Create (request only)
+# -----------------------------
+class CreateListing(ListingBase):
+    pass
+
+
+# -----------------------------
+# Update (partial update)
+# -----------------------------
 class UpdateListing(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
     image: Optional[str] = None
     price: Optional[int] = None
-    location: str = None
-    country: str = None
-        
-        
+    location: Optional[str] = None
+    country: Optional[str] = None
+
+
+# -----------------------------
+# Reviews
+# -----------------------------
 class CreateReview(BaseModel):
     comment: str = Field(..., min_length=3, max_length=100)
     rating: int = Field(..., ge=1, le=5)
-    
-    
+
+
 class ReadReview(CreateReview):
     uid: uuid.UUID
     listing_uid: uuid.UUID
@@ -45,8 +52,20 @@ class ReadReview(CreateReview):
         from_attributes = True
 
 
-class ReadListing(LisitngModel):
+# -----------------------------
+# POST response (NO relationships)
+# -----------------------------
+class ListingCreated(ListingBase):
     uid: uuid.UUID
+
+    class Config:
+        from_attributes = True
+
+
+# -----------------------------
+# GET response (WITH relationships)
+# -----------------------------
+class ReadListing(ListingCreated):
     reviews: List[ReadReview] = []
 
     class Config:

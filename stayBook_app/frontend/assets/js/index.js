@@ -13,7 +13,7 @@ async function listings() {
 
                                 cardWrapper.innerHTML = `
                                 <a href="/listing.html?id=${item.uid}" class="listing-link">
-                                    <div class="card" style="width: 18rem;">
+                                    <div class="card listing-card" style="width: 18rem;">
                                         <img 
                                             src="${item.image || 'https://via.placeholder.com/300x200'}" 
                                             class="card-img-top" 

@@ -116,3 +116,23 @@ class ListingService:
         await session.refresh(listing_reviews)
         
         return listing_reviews
+
+
+    """
+        Review Deletion
+    """
+    async def del_review(self, list_uid: uuid.UUID, review_uid: uuid.UUID, session: AsyncSession):
+        listing = await session.get(Listing, list_uid)
+
+        if not listing:
+            raise ListingNotFoundError()
+
+        statement = select(Reviews).where(Reviews.uid == review_uid, Reviews.listing_uid == list_uid)
+        result = await session.execute(statement)
+        review = result.scalar_one_or_none()
+
+        if not review:
+            raise ReviewsNotFoundError()
+
+        await session.delete(review)
+        await session.commit()
