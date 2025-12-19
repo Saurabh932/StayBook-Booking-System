@@ -7,6 +7,7 @@ from pathlib import Path
 from ..db.session import init_db
 from ..api.listings import list_router
 from ..api.reviews import review_router
+from ..api.user import user_router
 from ..core.exception import StayBookError
 from ..core.error_handler import staybook_exception_handler, generic_exception_handler, validation_exception_handler
 from ..middleware.logging import logging_middleware
@@ -51,6 +52,7 @@ app.add_exception_handler(Exception, generic_exception_handler)
 # Routes
 app.include_router(list_router)
 app.include_router(review_router)
+app.include_router(user_router)
 
 # Serve static assets first
 app.mount("/assets", StaticFiles(directory=str(ASSETS_DIR)), name="assets")

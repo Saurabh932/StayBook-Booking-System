@@ -25,3 +25,12 @@ class Reviews(SQLModel, table=True):
     rating: int = Field(..., ge=1, le=5)
     created_at: datetime = Field(default_factory=datetime.now, sa_column=Column(DateTime(timezone=True)))
     listing: Listing = Relationship(back_populates="reviews")
+    
+
+class Users(SQLModel, table=True):
+    __tablename__="users"
+    uid: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
+    username: str = Field(..., unique=True, index=True, min_length=4, max_length=20)
+    email: str = Field(..., unique=True, index=True)
+    hash_password: str
+    created_at: datetime = Field(default_factory=datetime.now, sa_column=Column(DateTime(timezone=True)))

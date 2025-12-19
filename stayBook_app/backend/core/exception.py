@@ -23,3 +23,9 @@ class ReviewsNotFoundError(StayBookError):
     status_code = 404
     error_type = "ReviewsNotFoundError"
     message = "Reviews not found"
+    
+    
+class UserAlreadyExistsError(StayBookError):
+    status_code = 404
+    error_type = "UserAlreadyExistsError"
+    message = "User with this email and username already exists"

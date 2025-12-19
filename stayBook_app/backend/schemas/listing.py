@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, EmailStr, Field
 from typing import List, Optional
 from datetime import datetime
 import uuid
@@ -68,5 +68,26 @@ class ListingCreated(ListingBase):
 class ReadListing(ListingCreated):
     reviews: List[ReadReview] = []
 
+    class Config:
+        from_attributes = True
+
+
+
+# -----------------------------
+# User
+# -----------------------------
+class UserBase(BaseModel):
+    username: str
+    email: EmailStr
+    
+
+class UserCreate(UserBase):
+    password: str = Field(min_length=4)
+    
+    
+class UserRead(UserBase):
+    uid: uuid.UUID
+    created_at: datetime
+    
     class Config:
         from_attributes = True

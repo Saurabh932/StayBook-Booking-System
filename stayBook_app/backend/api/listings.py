@@ -4,12 +4,7 @@ from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..db.session import get_session
-from ..schemas.listing import (
-    ListingCreated,
-    ReadListing,
-    CreateListing,
-    UpdateListing,
-)
+from ..schemas.listing import ListingCreated, ReadListing, CreateListing, UpdateListing
 from ..services.services import ListingService
 
 

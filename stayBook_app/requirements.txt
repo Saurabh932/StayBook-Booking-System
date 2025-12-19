@@ -6,3 +6,4 @@ sqlmodel
 sqlalchemy
 jinja2
 psycopg
+passlib[bcrypt]
