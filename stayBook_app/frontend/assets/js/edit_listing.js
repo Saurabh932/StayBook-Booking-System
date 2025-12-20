@@ -1,21 +1,37 @@
+// ==================================================
+// Auth Guard
+// ==================================================
+const token = localStorage.getItem("access_token");
+
+if (!token) {
+    alert("Please login first");
+    window.location.href = "/login.html";
+}
+
+
+// ==================================================
+// Edit Listing Page
+// ==================================================
 async function editListingPage() {
     const form = document.querySelector(".needs-validation");
     const params = new URLSearchParams(window.location.search);
     const id = params.get("id");
 
-    if (!form) {
-        console.error("Form element not found after layout load.");
-        return;
-    }
-    if (!id) {
-        alert("No listing ID found");
+    if (!form || !id) {
+        alert("Invalid page");
         return;
     }
 
-    // fetch current data and pre-fill form
+    // ----------------------------------------------
+    // Load existing listing
+    // ----------------------------------------------
     try {
         const response = await fetch(`/listings/${id}`);
-        if (!response.ok) throw new Error("Listing not found");
+
+        if (!response.ok) {
+            alert("Listing not found");
+            return;
+        }
 
         const listing = await response.json();
 
@@ -28,10 +44,12 @@ async function editListingPage() {
     }
     catch (error) {
         console.error(error);
-        alert("Error loading listing data");
+        alert("Error loading listing");
     }
 
-    // handle edit submit
+    // ----------------------------------------------
+    // Submit update
+    // ----------------------------------------------
     form.addEventListener("form:valid", async (event) => {
         event.preventDefault();
 
@@ -41,17 +59,24 @@ async function editListingPage() {
         try {
             const response = await fetch(`/listings/${id}`, {
                 method: "PATCH",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data),
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(data)
             });
 
             if (!response.ok) {
-                alert("Error updating listing");
+                if (response.status === 403) {
+                    alert("You are not allowed to edit this listing");
+                } else {
+                    alert("Error updating listing");
+                }
                 return;
             }
 
-            alert("Listing updated successfully!");
-            window.location.href = `/listing.html?id=${id}`; // Go back to details page
+            alert("Listing updated successfully");
+            window.location.href = `/listing.html?id=${id}`;
         }
         catch (error) {
             console.error(error);

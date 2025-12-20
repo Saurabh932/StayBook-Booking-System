@@ -1,0 +1,35 @@
+<title>StayBook | Login</title>
+
+<div id="layout"></div>
+
+<div id="page-content" style="display: none;">
+  <div class="row">
+    <div class="col-6 offset-3">
+      <h3 class="mb-4">Login</h3>
+
+      <form class="needs-validation" novalidate>
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input type="email" name="email" class="form-control" required>
+          <div class="invalid-feedback">Enter a valid email</div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input type="password" name="password" class="form-control" required>
+          <div class="invalid-feedback">Password required</div>
+        </div>
+
+        <button type="submit" class="btn btn-dark">Login</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { loadLayout } from "../assets/js/script.js";
+  loadLayout("page-content");
+
+  import("../assets/js/bs-validation.js");
+  import("../assets/js/login.js");
+</script>

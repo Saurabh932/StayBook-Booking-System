@@ -1,35 +1,44 @@
-async function handleNewListingSubmit(){
-    const form = document.querySelector(".needs-validation")
+const token = localStorage.getItem("access_token");
 
+if (!token) {
+    alert("Please login first");
+    window.location.href = "/login.html";
+}
+
+
+async function handleNewListingSubmit() {
+    const form = document.querySelector(".needs-validation");
     if (!form) return;
 
     form.addEventListener("form:valid", async (event) => {
         event.preventDefault();
 
-        // Collecting form data using FormData API
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
 
-        // Sending the data as JSON Post  requresing using fetch
-        try{
-            const response = await fetch("/listings/", {method: "POST", headers:{"Content-Type":"application/json"},
-                                                        body: JSON.stringify(data)});
-             if (!response.ok){
-                alert("Error crating listing ");
+        try {
+            const response = await fetch("/listings/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (!response.ok) {
+                alert("Error creating listing");
                 return;
-             }
+            }
 
-             console.log("Listing Created!!");
-             alert("Listing Created!!");
-
-            //  Then returning back to index
+            alert("Listing created");
             window.location.href = "/";
         }
-        catch (error){
-            console.log("Error: ", error);
-            alert("Some error while creating the listing.");
+        catch (error) {
+            console.error(error);
+            alert("Something went wrong");
         }
-    })
+    });
 }
 
-handleNewListingSubmit()
+handleNewListingSubmit();

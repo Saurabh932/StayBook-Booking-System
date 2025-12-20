@@ -1,4 +1,14 @@
 // ==================================================
+// Autherization
+// ==================================================
+function getAuthHeader() {
+    const token = localStorage.getItem("access_token");
+    return token ? { "Authorization": `Bearer ${token}` } : {};
+}
+
+
+
+// ==================================================
 // Listing Details + Reviews Loader
 // ==================================================
 async function listing_details(){
@@ -11,7 +21,8 @@ async function listing_details(){
     }
 
     try{
-        const response = await fetch(`http://127.0.0.1:8000/listings/${id}`)
+        const response = await fetch(`/listings/${id}`)
+
         
         if (!response.ok){
             throw new Error("Listing not found")
@@ -128,7 +139,8 @@ async function deleteListing(){
             console.error("No ID present in URL");
             return
         }
-        const response = await fetch(`http://127.0.0.1:8000/listings/${id}`, {method:"DELETE"})
+        const response = await fetch(`http://127.0.0.1:8000/listings/${id}`, {method:"DELETE",
+                                                                            headers: {"Content-Type": "application/json",...getAuthHeader()}})
         
         if (!response.ok){
             console.log("Error while deleting the listing")
@@ -167,8 +179,19 @@ async function handleReviewForm(){
 
         const payload = {rating, comment}
         
-        const response = await fetch(`/listings/${id}/reviews`, {method: "POST", headers: {'Content-Type':"application/json"},
-                                                                body: JSON.stringify(payload)})
+        const response = await fetch(
+                                    `/listings/${id}/reviews`,
+                                    {
+                                        method: "POST",
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                            ...getAuthHeader()
+                                        },
+                                        body: JSON.stringify(payload)
+                                    }
+                                );
+
+
         
         if (!response.ok) {
             alert("Error Submitting review")

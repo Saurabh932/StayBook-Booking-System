@@ -74,7 +74,7 @@ class ReadListing(ListingCreated):
 
 
 # -----------------------------
-# User
+# User Sign Up
 # -----------------------------
 class UserBase(BaseModel):
     username: str
@@ -91,3 +91,17 @@ class UserRead(UserBase):
     
     class Config:
         from_attributes = True
+        
+        
+        
+# -----------------------------
+# User Login
+# -----------------------------
+class LoginRequest(BaseModel):
+    email: EmailStr
+    password: str
+    
+    
+class TokenResponse(BaseModel):
+    access_token: str
+    access_token: str = "bearer"

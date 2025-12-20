@@ -29,3 +29,15 @@ class UserAlreadyExistsError(StayBookError):
     status_code = 404
     error_type = "UserAlreadyExistsError"
     message = "User with this email and username already exists"
+    
+    
+class InvalidCredentialsError(StayBookError):
+    status_code = 404
+    error_type = "InvalidCredentialsError"
+    message = "Invalid email or password"
+    
+
+class ForbiddenError(StayBookError):
+    status_code = 403
+    error_type = "Forbidden"
+    message = "You are not allowed to perform this action"

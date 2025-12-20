@@ -5,9 +5,9 @@ from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..db.session import get_session
-from ..models.listing import Listing, Reviews
+from ..models.listing import Listing, Reviews, Users
 from ..schemas.listing import ReadListing, CreateListing, UpdateListing, ReadReview, CreateReview
-from ..core.exception import ListingNotFoundError, ReviewsNotFoundError
+from ..core.exception import ListingNotFoundError, ReviewsNotFoundError, ForbiddenError
 
 class ListingService:
     
@@ -24,7 +24,7 @@ class ListingService:
     """
         Creating a Listing
     """
-    async def create(self, payload: CreateListing, session: AsyncSession):
+    async def create(self, payload: CreateListing, user: Users, session: AsyncSession):
         statement = select(Listing).where(Listing.title == payload.title)
         result = await session.execute(statement)
         existing  = result.scalar_one_or_none()
@@ -32,12 +32,7 @@ class ListingService:
         if existing:
             return {"error":"Lisitng of this title already exists"}
         
-        new_listing = Listing(title=payload.title,
-                              description=payload.description,
-                              image=payload.image,
-                              price=payload.price,
-                              location=payload.location,
-                              country=payload.country)
+        new_listing = Listing(**payload.model_dump(), owner_id = user.uid)
 
         session.add(new_listing)
         await session.commit()
@@ -62,13 +57,16 @@ class ListingService:
     """
         Updating a Listing
     """    
-    async def update(self, list_uid: uuid.UUID, payload:UpdateListing, session: AsyncSession):
+    async def update(self, list_uid: uuid.UUID, payload:UpdateListing, user:Users, session: AsyncSession):
         statement = select(Listing).where(Listing.uid == list_uid)
         result = await session.execute(statement)
         listing = result.scalar_one_or_none()
         
         if not listing:
             raise ListingNotFoundError()
+        
+        if listing.owner_id != user.uid:
+            raise ForbiddenError("You do not own this listing.")
         
         for field, value in payload.model_dump(exclude_unset=True).items():
             if field=="image" and value is not None:
@@ -86,17 +84,23 @@ class ListingService:
     """
         Delete a listing
     """
-    async def delete(self, list_uid: uuid.UUID, session: AsyncSession):
+    async def delete(self, list_uid: uuid.UUID, user: Users, session: AsyncSession):
         statement = select(Listing).where(Listing.uid == list_uid)
         result = await session.execute(statement)
         listing = result.scalar_one_or_none()
         
         if not listing:
             raise ListingNotFoundError()
+        if listing.owner_id != user.uid:
+            raise ForbiddenError("You do not own this listing")
         
         await session.delete(listing)
         await session.commit()
         return {"message":"Delete successfull"}
+    
+    
+    """        ------------------------------------------------------------------------------------------------------
+    """
     
     
     """

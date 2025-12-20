@@ -2,8 +2,9 @@ import asyncio
 from decimal import Decimal
 
 from sqlmodel import select
+from passlib.context import CryptContext
 
-from ..models.listing import Listing
+from ..models.listing import Listing, Users
 from ..db.session import init_db, async_session_maker
 
 
@@ -217,10 +218,14 @@ SAMPLE_LISTINGS = [
 # ==================================================
 # Seed Function
 # ==================================================
+# ==================================================
+# Seed Function
+# ==================================================
 async def seed():
     await init_db()
 
     async with async_session_maker() as session:
+        # 1. Check if listings already exist
         result = await session.execute(select(Listing))
         listing_exist = result.scalars().first()
 
@@ -228,10 +233,35 @@ async def seed():
             print("Database already seeded! Skipping...")
             return
 
-        session.add_all(Listing(**data) for data in SAMPLE_LISTINGS)
+        # Hashing password
+        pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+        hashed_password = pwd_context.hash("test12")
+
+        
+        # 2. Create a single seed user
+        seed_user = Users(
+                            username="test1",
+                            email="test1@gmail.com",
+                            hash_password=hashed_password,
+                        )
+
+        session.add(seed_user)
+        await session.flush()  # ensures seed_user.uid is available
+
+        # 3. Create listings owned by the same user
+        listings = [
+            Listing(owner_id=seed_user.uid, **data)
+            for data in SAMPLE_LISTINGS
+        ]
+
+        session.add_all(listings)
         await session.commit()
 
-        print(f"Seeded database with {len(SAMPLE_LISTINGS)} listings.")
+        print(
+            f"Seeded database with {len(SAMPLE_LISTINGS)} listings "
+            f"owned by user {seed_user.username}"
+        )
+
 
 
 if __name__ == "__main__":

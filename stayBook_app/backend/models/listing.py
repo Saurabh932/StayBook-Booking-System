@@ -14,7 +14,15 @@ class Listing(SQLModel , table=True):
     price: int = Field(...)
     location: str = Field(...)
     country: str = Field(...)
+    
+    # Ownership
+    owner_id: uuid.UUID = Field(sa_column=Column(ForeignKey("users.uid", ondelete="CASCADE"), nullable=False))
+    owner: "Users" = Relationship(back_populates="listings")
+
+    
     reviews: List["Reviews"] = Relationship(back_populates="listing", sa_relationship_kwargs={"cascade":"all, delete"})
+
+    
     
     
 class Reviews(SQLModel, table=True):
@@ -26,6 +34,8 @@ class Reviews(SQLModel, table=True):
     created_at: datetime = Field(default_factory=datetime.now, sa_column=Column(DateTime(timezone=True)))
     listing: Listing = Relationship(back_populates="reviews")
     
+    
+    
 
 class Users(SQLModel, table=True):
     __tablename__="users"
@@ -34,3 +44,5 @@ class Users(SQLModel, table=True):
     email: str = Field(..., unique=True, index=True)
     hash_password: str
     created_at: datetime = Field(default_factory=datetime.now, sa_column=Column(DateTime(timezone=True)))
+        
+    listings: List["Listing"] = Relationship(back_populates="owner")

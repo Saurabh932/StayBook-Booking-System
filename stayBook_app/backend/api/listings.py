@@ -4,7 +4,9 @@ from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..db.session import get_session
+from ..models.listing import Users
 from ..schemas.listing import ListingCreated, ReadListing, CreateListing, UpdateListing
+from ..core.dependencies import get_current_user
 from ..services.services import ListingService
 
 
@@ -24,8 +26,8 @@ async def home(session: AsyncSession = Depends(get_session)):
 # Create listing (NO reviews)
 # -----------------------------
 @list_router.post("/", response_model=ListingCreated, status_code=status.HTTP_201_CREATED,)
-async def create_listing(payload: CreateListing, session: AsyncSession = Depends(get_session),):
-    return await list_service.create(payload, session)
+async def create_listing(payload: CreateListing, session: AsyncSession = Depends(get_session), current_user: Users = Depends(get_current_user)):
+    return await list_service.create(payload, current_user, session)
 
 
 # -----------------------------
@@ -40,14 +42,14 @@ async def search_listing(list_id: uuid.UUID, session: AsyncSession = Depends(get
 # Update listing (NO reviews)
 # -----------------------------
 @list_router.patch("/{list_id}", response_model=ListingCreated, status_code=status.HTTP_200_OK,)
-async def update_listing(list_id: uuid.UUID,payload: UpdateListing, session: AsyncSession = Depends(get_session),):
-    return await list_service.update(list_id, payload, session)
+async def update_listing(list_id: uuid.UUID, payload: UpdateListing, session: AsyncSession = Depends(get_session), current_user: Users = Depends(get_current_user)):
+    return await list_service.update(list_id, payload, current_user, session)
 
 
 # -----------------------------
 # Delete listing
 # -----------------------------
 @list_router.delete("/{list_id}",status_code=status.HTTP_200_OK,)
-async def delete_listing(list_id: uuid.UUID, session: AsyncSession = Depends(get_session)):
-    await list_service.delete(list_id, session)
+async def delete_listing(list_id: uuid.UUID, session: AsyncSession = Depends(get_session), current_user: Users = Depends(get_current_user)):
+    await list_service.delete(list_id, current_user, session)
     return {"message": "Listing deleted"}
