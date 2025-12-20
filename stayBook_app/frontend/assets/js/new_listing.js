@@ -1,10 +1,13 @@
 const token = localStorage.getItem("access_token");
 
 if (!token) {
-    alert("Please login first");
+    setFlash("Please login first.", "warning");
     window.location.href = "/login.html";
+    return;
 }
 
+
+import { setFlash } from "./script.js";
 
 async function handleNewListingSubmit() {
     const form = document.querySelector(".needs-validation");
@@ -27,16 +30,16 @@ async function handleNewListingSubmit() {
             });
 
             if (!response.ok) {
-                alert("Error creating listing");
+                setFlash("Failed to create listing.", "danger");
                 return;
             }
 
-            alert("Listing created");
+            setFlash("Listing created successfully!", "success");
             window.location.href = "/";
         }
         catch (error) {
             console.error(error);
-            alert("Something went wrong");
+            setFlash("Something went wrong", "danger");
         }
     });
 }
