@@ -34,7 +34,8 @@ class Reviews(SQLModel, table=True):
     created_at: datetime = Field(default_factory=datetime.now, sa_column=Column(DateTime(timezone=True)))
     listing: Listing = Relationship(back_populates="reviews")
     
-    
+    user_id: uuid.UUID = Field(foreign_key="users.uid")
+
     
 
 class Users(SQLModel, table=True):

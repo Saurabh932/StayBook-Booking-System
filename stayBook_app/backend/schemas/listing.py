@@ -30,7 +30,7 @@ class UpdateListing(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
     image: Optional[str] = None
-    price: Optional[int] = None
+    price: Optional[int] = None 
     location: Optional[str] = None
     country: Optional[str] = None
 
@@ -47,6 +47,8 @@ class ReadReview(CreateReview):
     uid: uuid.UUID
     listing_uid: uuid.UUID
     created_at: datetime
+    
+    user_id: uuid.UUID
 
     class Config:
         from_attributes = True
@@ -66,6 +68,8 @@ class ListingCreated(ListingBase):
 # GET response (WITH relationships)
 # -----------------------------
 class ReadListing(ListingCreated):
+    owner_id: uuid.UUID
+    
     reviews: List[ReadReview] = []
 
     class Config:

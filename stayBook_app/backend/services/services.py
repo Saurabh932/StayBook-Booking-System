@@ -1,3 +1,4 @@
+from operator import or_
 import uuid
 
 from sqlmodel import select
@@ -52,7 +53,20 @@ class ListingService:
             raise ListingNotFoundError()
         
         return listing
-    
+
+    """
+        Searching a Listing with keyword
+    """
+    async def search_listings(self, query: str, session: AsyncSession):
+        pattern = f"%{query.lower()}%"
+
+        statement = (select(Listing).where(or_(func.lower(Listing.title).like(pattern),
+                    func.lower(Listing.description).like(pattern))).limit(20))
+
+        result = await session.execute(statement)
+        return result.scalars().all()
+
+        
     
     """
         Updating a Listing
@@ -106,14 +120,14 @@ class ListingService:
     """
         Reviews Creation
     """
-    async def create_review(self, list_uid: uuid.UUID, payload: CreateReview, session: AsyncSession):
+    async def create_review(self, list_uid: uuid.UUID, payload: CreateReview, current_user: Users, session: AsyncSession):
         listing = await session.get(Listing, list_uid)
         
         if not listing:
             raise ListingNotFoundError()
         
 
-        listing_reviews = Reviews(listing_uid=list_uid, comment=payload.comment, rating=payload.rating)
+        listing_reviews = Reviews(listing_uid=list_uid, user_id=current_user.uid, comment=payload.comment, rating=payload.rating)
         
         session.add(listing_reviews)
         await session.commit()
@@ -125,7 +139,7 @@ class ListingService:
     """
         Review Deletion
     """
-    async def del_review(self, list_uid: uuid.UUID, review_uid: uuid.UUID, session: AsyncSession):
+    async def del_review(self, list_uid: uuid.UUID, review_uid: uuid.UUID, current_user: Users, session: AsyncSession):
         listing = await session.get(Listing, list_uid)
 
         if not listing:
@@ -137,6 +151,9 @@ class ListingService:
 
         if not review:
             raise ReviewsNotFoundError()
+        
+        if review.user_id != current_user.uid:
+            raise ForbiddenError("You do not own this review.")
 
         await session.delete(review)
         await session.commit()

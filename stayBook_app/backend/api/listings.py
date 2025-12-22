@@ -1,6 +1,6 @@
 import uuid
 from typing import List
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..db.session import get_session
@@ -36,6 +36,16 @@ async def create_listing(payload: CreateListing, session: AsyncSession = Depends
 @list_router.get("/{list_id}", response_model=ReadListing, status_code=status.HTTP_200_OK,)
 async def search_listing(list_id: uuid.UUID, session: AsyncSession = Depends(get_session),):
     return await list_service.get_listing(list_id, session)
+
+
+    
+    
+# -----------------------------
+# Searchin a Listing using keywords
+# -----------------------------
+@list_router.get("/search", response_model=list[ReadListing])
+async def search_listings(q: str = Query(..., min_length=2), session: AsyncSession = Depends(get_session)):
+    return await list_service.search_listings(q, session)
 
 
 # -----------------------------

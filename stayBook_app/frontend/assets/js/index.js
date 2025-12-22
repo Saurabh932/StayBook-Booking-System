@@ -1,13 +1,4 @@
 // ==================================================
-// Autherization
-// ==================================================
-function getAuthHeader() {
-    const token = localStorage.getItem("access_token");
-    return token ? { "Authorization": `Bearer ${token}` } : {};
-}
-
-
-// ==================================================
 // Load Listings
 // ==================================================
 async function listings() {

@@ -18,7 +18,8 @@ export async function loadLayout(pageContentId) {
     }
 
     showFlash();
-    renderAuthNav();
+    await renderAuthNav();
+
 }
 
 
@@ -35,15 +36,33 @@ export function showFlash() {
 
     const { message, type } = JSON.parse(data);
     const container = document.getElementById("flash-container");
-
     if (!container) return;
 
     container.innerHTML = `
-        <div class="alert alert-${type} alert-dismissible fade show" role="alert">
-            ${message}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <div class="alert alert-${type} fade show d-flex align-items-center" role="alert">
+            <span>${message}</span>
+            <button
+                type="button"
+                class="btn-close ms-auto"
+                aria-label="Close">
+            </button>
         </div>
     `;
+
+    const alert = container.querySelector(".alert");
+    const closeBtn = container.querySelector(".btn-close");
+
+    closeBtn.addEventListener("click", () => {
+        alert.classList.remove("show");
+        setTimeout(() => alert.remove(), 150);
+    });
+
+    setTimeout(() => {
+        if (alert) {
+            alert.classList.remove("show");
+            setTimeout(() => alert.remove(), 150);
+        }
+    }, 3000);
 
     sessionStorage.removeItem("flash");
 }
@@ -57,13 +76,15 @@ async function renderAuthNav() {
     if (!authNav) return;
 
     const token = localStorage.getItem("access_token");
-
     authNav.innerHTML = "";
 
     if (!token) {
         authNav.innerHTML = `
-            <a class="nav-link" href="/signup.html">Sign Up</a>
-            <a class="nav-link" href="/login.html">Login</a>
+            <button class="btn btn-sm btn-outline-dark ms-2 btn-add">
+                <a class="nav-link" href="/new_listing.html">Add your home</a>
+            </button>
+            <b><a class="nav-link" href="/signup.html">Sign Up</a></b>
+            <b><a class="nav-link" href="/login.html">Login</a></b>
         `;
         return;
     }
@@ -78,8 +99,12 @@ async function renderAuthNav() {
         if (!response.ok) throw new Error("Auth failed");
 
         const user = await response.json();
+        localStorage.setItem("user_id", user.uid);
 
         authNav.innerHTML = `
+        <button class="btn btn-sm btn-outline-dark ms-2 btn-add">
+                <a class="nav-link" href="/new_listing.html">Add your home</a>
+            </button>
             <span class="nav-link fw-semibold">
                 <i class="fa-solid fa-user"></i> ${user.username}
             </span>
@@ -92,7 +117,6 @@ async function renderAuthNav() {
             localStorage.clear();
             setFlash("Logged out successfully.", "info");
             window.location.href = "/";
-
         };
 
     } catch (error) {

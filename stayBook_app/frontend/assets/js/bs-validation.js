@@ -1,4 +1,5 @@
-// assets/js/bs-validation.js
+import { setFlash } from "./script.js";
+
 (() => {
   'use strict';
 

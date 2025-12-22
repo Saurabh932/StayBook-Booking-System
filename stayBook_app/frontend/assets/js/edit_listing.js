@@ -1,10 +1,13 @@
+import { setFlash } from "./script.js";
+
+
 // ==================================================
 // Auth Guard
 // ==================================================
 const token = localStorage.getItem("access_token");
 
 if (!token) {
-    alert("Please login first");
+    setFlash("Please login first", "danger");
     window.location.href = "/login.html";
 }
 
@@ -18,7 +21,7 @@ async function editListingPage() {
     const id = params.get("id");
 
     if (!form || !id) {
-        alert("Invalid page");
+        setFlash("Invalid page", "danger");
         return;
     }
 
@@ -28,8 +31,9 @@ async function editListingPage() {
     try {
         const response = await fetch(`/listings/${id}`);
 
-        if (!response.ok) {
-            alert("Listing not found");
+        if (response.status === 403) {
+            setFlash("You don’t own this listing", "danger");
+            window.location.href = "/";
             return;
         }
 
@@ -44,7 +48,7 @@ async function editListingPage() {
     }
     catch (error) {
         console.error(error);
-        alert("Error loading listing");
+        setFlash("Error loading listing", "danger");
     }
 
     // ----------------------------------------------
@@ -68,19 +72,19 @@ async function editListingPage() {
 
             if (!response.ok) {
                 if (response.status === 403) {
-                    alert("You are not allowed to edit this listing");
+                    setFlash("You are not allowed to edit this listing", "danger");
                 } else {
-                    alert("Error updating listing");
+                    setFlash("Error updating listing", "danger");
                 }
                 return;
             }
 
-            alert("Listing updated successfully");
+            setFlash("Listing updated successfully", "success");
             window.location.href = `/listing.html?id=${id}`;
         }
         catch (error) {
             console.error(error);
-            alert("Something went wrong");
+            setFlash("Something went wrong", "danger");
         }
     });
 }

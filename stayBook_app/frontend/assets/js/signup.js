@@ -1,3 +1,5 @@
+import { setFlash } from "./script.js";
+
 async function handleSignupForm() {
   const form = document.querySelector(".needs-validation");
   if (!form) return;
@@ -14,17 +16,17 @@ async function handleSignupForm() {
 
       if (!response.ok) {
         const error = await response.json();
-        alert(error?.error?.message || "Signup failed");
+        setFlash(error?.error?.message || "Signup failed", "danger");
         return;
       }
 
-      alert("Signup successful! You can now login.");
+      setFlash("Signup successful! You can now login.", "success");
       window.location.href = "/login.html";
 
       
     } catch (err) {
       console.error(err);
-      alert("Something went wrong");
+      setFlash("Something went wrong", "danger");
     }
   });
 }
