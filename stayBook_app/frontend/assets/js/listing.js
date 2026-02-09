@@ -11,19 +11,21 @@ function getAuthHeader() {
 
 
 // ==================================================
-// Current User Helper  ✅ NEW
+// Current User Helper 
 // ==================================================
 function getCurrentUserId() {
     const token = localStorage.getItem("access_token");
     if (!token) return null;
 
     try {
-        const payload = JSON.parse(atob(token.split(".")[1]));
-        return payload.sub;
+        const base64 = token.split(".")[1];
+        const payload = JSON.parse(atob(base64));
+        return payload.sub || null;
     } catch {
         return null;
     }
 }
+
 
 const currentUserId = getCurrentUserId();
 
@@ -36,7 +38,7 @@ async function listing_details() {
     const id = params.get("id");
 
     if (!id) {
-        console.error("Id not found");
+        // console.error("Id not found");
         return;
     }
 
@@ -59,8 +61,8 @@ async function listing_details() {
                     <img src="${details.image ?? ""}" class="card-img-top show-image" alt="listing_image">
                     <div class="card-body">
                         <br>
-                        ${details.description ?? "N/A"}<br>
-                        ${details.price ?? "N/A"}<br>
+                        <b>${details.description ?? "N/A"}<br>
+                        Rs. ${details.price ?? "N/A"}<br></b>
                         ${details.location ?? "N/A"}<br>
                         ${details.country ?? "N/A"}<br>
                     </div>
@@ -90,7 +92,7 @@ listing_details();
 
 
 // ==================================================
-// Star Renderer  ⭐ NEW
+// Star Renderer
 // ==================================================
 function renderStars(rating) {
     let stars = "";
@@ -211,7 +213,7 @@ deleteListing();
 // Review Form
 // ==================================================
 function handleReviewForm() {
-    const form = document.querySelector("form");
+    const form = document.getElementById("review-form");
     if (!form) return;
 
     const param = new URLSearchParams(window.location.search);

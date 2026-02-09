@@ -1,11 +1,14 @@
 from operator import or_
 import uuid
 
+from pydantic import ValidationError
 from sqlmodel import select
+from sqlalchemy import func
 from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..db.session import get_session
+
 from ..models.listing import Listing, Reviews, Users
 from ..schemas.listing import ReadListing, CreateListing, UpdateListing, ReadReview, CreateReview
 from ..core.exception import ListingNotFoundError, ReviewsNotFoundError, ForbiddenError
@@ -31,8 +34,8 @@ class ListingService:
         existing  = result.scalar_one_or_none()
         
         if existing:
-            return {"error":"Lisitng of this title already exists"}
-        
+            raise ValidationError()
+
         new_listing = Listing(**payload.model_dump(), owner_id = user.uid)
 
         session.add(new_listing)

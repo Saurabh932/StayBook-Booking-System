@@ -23,6 +23,14 @@ async def home(session: AsyncSession = Depends(get_session)):
 
 
 # -----------------------------
+# Searchin a Listing using keywords
+# -----------------------------
+@list_router.get("/search", response_model=list[ReadListing])
+async def search_listings(q: str = Query(..., min_length=2), session: AsyncSession = Depends(get_session)):
+    return await list_service.search_listings(q, session)
+
+
+# -----------------------------
 # Create listing (NO reviews)
 # -----------------------------
 @list_router.post("/", response_model=ListingCreated, status_code=status.HTTP_201_CREATED,)
@@ -36,16 +44,6 @@ async def create_listing(payload: CreateListing, session: AsyncSession = Depends
 @list_router.get("/{list_id}", response_model=ReadListing, status_code=status.HTTP_200_OK,)
 async def search_listing(list_id: uuid.UUID, session: AsyncSession = Depends(get_session),):
     return await list_service.get_listing(list_id, session)
-
-
-    
-    
-# -----------------------------
-# Searchin a Listing using keywords
-# -----------------------------
-@list_router.get("/search", response_model=list[ReadListing])
-async def search_listings(q: str = Query(..., min_length=2), session: AsyncSession = Depends(get_session)):
-    return await list_service.search_listings(q, session)
 
 
 # -----------------------------

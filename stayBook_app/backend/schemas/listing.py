@@ -108,4 +108,4 @@ class LoginRequest(BaseModel):
     
 class TokenResponse(BaseModel):
     access_token: str
-    access_token: str = "bearer"
+    token_type: str

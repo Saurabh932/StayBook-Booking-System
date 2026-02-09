@@ -5,61 +5,52 @@ body {
     min-height: 100vh;
 }
 
-.navbar-logo {
-  display: block;
-}
-
-
-.container {
+/* ------------------------------
+   Sticky footer (unchanged)
+--------------------------------*/
+main#content {
     flex: 1;
 }
 
-.form-label{
-    font-weight: 500;
+footer {
+    flex-shrink: 0;
 }
 
-/* Nav Bar */
+html, body {
+    height: 100%;
+}
+
+/* ------------------------------
+   Nav Bar (MINIMAL polish)
+--------------------------------*/
 .navbar {
     height: 5rem;
     background-color: white;
-}
-
-.fa-archway{
-    color: #fe424d;
-    font-size: 2rem;
+    /* subtle depth */
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
 }
 
 .nav-link {
-    color: #222222 !important
+    color: #222222 !important;
 }
 
-#nav-search-input {
-    width: 180px;
-    box-shadow: none;
+.navbar-brand img {
+    transition: transform 0.2s ease; /* NEW */
 }
 
-#nav-search-input::placeholder {
-    font-size: 0.85rem;
+.navbar-brand:hover img {
+    transform: scale(1.04); /* NEW */
 }
 
-
-.search-form {
-    gap: 0.5rem;
-}
-
-/* Input */
-#nav-search-input {
-    width: 180px !important;
-}
-
+/* ------------------------------
+   Search
+--------------------------------*/
 .search-ip {
     border-radius: 2rem !important;
-
     padding: 0.45rem 1rem !important;
     font-size: 0.9rem !important;
 }
 
-/* Button */
 .btn-search {
     border-radius: 2rem;
     padding: 0.45rem 1rem;
@@ -75,59 +66,54 @@ body {
     color: #fff;
 }
 
-
-.btn-add {
-    border-radius: 2rem !important;
+/* ------------------------------
+   Buttons (very light polish)
+--------------------------------*/
+.btn {
+    border-radius: 999px; /* NEW: softer */
+    transition: transform 0.15s ease, box-shadow 0.15s ease; /* NEW */
 }
 
-.btn-add:hover {
+.btn:hover {
+    transform: translateY(-1px); /* NEW */
+}
+
+.add-btn,
+.edit-btn,
+.btn-dark {
     background-color: #fe424d !important;
-    color: #fff     ;
+    border: none !important;
 }
 
-
-/* Footer */
-.f-info-links a {
-    text-decoration: none;
-    color: #222;
+.add-btn:hover,
+.edit-btn:hover,
+.btn-dark:hover {
+    box-shadow: 0 4px 10px rgba(254, 66, 77, 0.35); /* NEW */
 }
 
-.f-info-links a:hover {
-    text-decoration: underline; 
+/* ------------------------------
+   Forms (tiny improvement)
+--------------------------------*/
+.form-label {
+    font-weight: 500;
 }
 
-.f-info-links, .f-info-social, .f-info-brand {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.form-control {
+    border-radius: 0.6rem; /* NEW (was sharp) */
 }
 
-
-.f-info-social i{
-    margin-right: 1rem;
-    font-size: 1.25rem;
+.form-control:focus {
+    border-color: #fe424d;
+    box-shadow: 0 0 0 0.15rem rgba(254, 66, 77, 0.2); /* NEW */
 }
 
-.f-info {
-    height: 8rem;
-    background-color: #ebebeb;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: space-evenly;
-    text-align: center;
-    font-size: 1.2rem;
-    margin-top: 4rem;
-
-}
-
-/* Filters */
+/* ------------------------------
+   Filters (hover feedback only)
+--------------------------------*/
 .filters {
     display: flex;
     flex-wrap: wrap;
 }
-
 
 .filter {
     text-align: center;
@@ -135,42 +121,41 @@ body {
     margin-left: 0.75rem;
     margin-top: 1rem;
     opacity: 0.7;
+    transition: opacity 0.2s ease, transform 0.2s ease; /* NEW */
 }
 
-.filter:hover{
+.filter:hover {
     opacity: 1;
+    transform: translateY(-2px); /* NEW */
 }
 
 .filter p {
     font-size: 0.8rem;
 }
 
-.tax-toggle {
-        border: 1px solid black;
-        border-radius: 1rem;
-        height: 3rem;
-        padding: 1rem;
-        margin-left: 3rem;
-        display: flex;
-        align-items: center;
-    }
-
-/* Cards */
+/* ------------------------------
+   Cards (MAIN polish, very subtle)
+--------------------------------*/
 .listing-card {
     border: none !important;
-    /* margin-bottom: 2rem; */
     margin: 1rem 0.65rem;
+    border-radius: 0.75rem; /* NEW */
+    transition: transform 0.25s ease, box-shadow 0.25s ease; /* NEW */
 }
 
-.card-img-top{
+.listing-card:hover {
+    transform: translateY(-4px); /* NEW */
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08); /* NEW */
+}
+
+.card-img-top {
     border-radius: 0.75rem !important;
     height: 42.5vh;
     width: 100% !important;
     object-fit: cover !important;
-    /* box-shadow:; */
 }
 
-
+/* Keep existing text styles */
 .listing-card .card-body {
     padding: 0;
 }
@@ -179,53 +164,27 @@ body {
     font-weight: 400 !important;
 }
 
-
-.listing-link{
+.listing-link {
     text-decoration: none !important;
 }
 
-.card-img-overlay {
-    opacity: 0;
-    transition: opacity 0.25s ease;
-}
-
-.listing-card:hover .card-img-overlay {
-    opacity: 1;
-    background-color: rgba(0, 0, 0, 0.08);
-}
-
-
-
-/* New Listing */
-.add-btn{
-    background-color: #fe424d !important;
-    border: none !important;
-}
-
-
-/* Edit Listing */
-.edit-btn{
-    background-color: #fe424d !important;
-    border: none !important;
-}
-
-
-/* Listings */
+/* ------------------------------
+   Listing details (unchanged look)
+--------------------------------*/
 .show-image {
     height: 250px;
     width: fit-content;
-
+    border-radius: 0.75rem; /* NEW */
 }
 
 .show-card {
     padding-left: 0;
-    padding-right: 0;;
+    padding-right: 0;
 }
 
-
-/* Reviews */
-
-
+/* ------------------------------
+   Reviews (soft polish)
+--------------------------------*/
 .review-card {
     border: none;
     border-radius: 0.75rem;
@@ -235,45 +194,39 @@ body {
 }
 
 .review-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+    transform: translateY(-3px); /* reduced */
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08); /* subtle */
 }
 
 .review-card .card-body {
     padding: 1.25rem 1.5rem;
 }
 
-/* User / title */
 .review-user {
     font-weight: 600;
     font-size: 1rem;
-    margin-bottom: 0.25rem;
 }
 
-/* Review text */
 .review-comment {
     color: #444;
     line-height: 1.6;
     font-size: 0.95rem;
 }
 
-/* Stars */
 .review-stars i {
     margin-right: 2px;
     font-size: 1rem;
 }
 
-/* Timestamp */
 .review-card small.text-muted {
     opacity: 0.7;
 }
 
-/* Delete button */
 .review-card .del-review-btn {
     background-color: transparent;
     border: 1px solid #222;
     color: #222;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .review-card .del-review-btn:hover {
@@ -281,14 +234,47 @@ body {
     color: #fff;
 }
 
-
-#reviews {
-    margin-top: 1rem;
+/* ------------------------------
+   Footer (unchanged layout, light polish)
+--------------------------------*/
+footer {
+    background-color: #ebebeb;
 }
 
-#reviews .col-md-6 {
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
+.f-info {
+    height: 8rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+    font-size: 1rem;
 }
 
+.f-info-links,
+.f-info-social,
+.f-info-brand {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
+.f-info-links a {
+    text-decoration: none;
+    color: #222;
+}
+
+.f-info-links a:hover {
+    text-decoration: underline;
+}
+
+.f-info-social i {
+    margin-right: 1rem;
+    font-size: 1.25rem;
+    transition: transform 0.2s ease, color 0.2s ease; /* NEW */
+}
+
+.f-info-social i:hover {
+    transform: scale(1.15); /* NEW */
+    color: #fe424d; /* NEW */
+}

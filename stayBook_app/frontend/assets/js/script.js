@@ -7,19 +7,23 @@ export async function loadLayout(pageContentId) {
 
     const response = await fetch("/templates/layout.html");
     const html = await response.text();
+
     layoutContainer.innerHTML = html;
 
-    const contentSlot = document.getElementById("content");
+    const pageContainer = document.getElementById("page-container");
     const pageContent = document.getElementById(pageContentId);
 
-    if (contentSlot && pageContent) {
-        contentSlot.appendChild(pageContent);
+    if (pageContainer && pageContent) {
+        pageContainer.appendChild(pageContent);
         pageContent.style.display = "block";
     }
 
-    showFlash();
-    await renderAuthNav();
+    // Show flash AFTER layout is painted
+    requestAnimationFrame(() => {
+        showFlash();
+    });
 
+    await renderAuthNav();
 }
 
 
@@ -27,42 +31,36 @@ export async function loadLayout(pageContentId) {
 // Flash Messages
 // ==================================================
 export function setFlash(message, type = "success") {
-    sessionStorage.setItem("flash", JSON.stringify({ message, type }));
+    sessionStorage.setItem(
+        "flash",
+        JSON.stringify({ message, type })
+    );
 }
 
 export function showFlash() {
     const data = sessionStorage.getItem("flash");
     if (!data) return;
 
-    const { message, type } = JSON.parse(data);
     const container = document.getElementById("flash-container");
     if (!container) return;
 
+    const { message, type } = JSON.parse(data);
+
     container.innerHTML = `
-        <div class="alert alert-${type} fade show d-flex align-items-center" role="alert">
-            <span>${message}</span>
-            <button
-                type="button"
-                class="btn-close ms-auto"
-                aria-label="Close">
-            </button>
+        <div class="alert alert-${type} alert-dismissible show" role="alert">
+            ${message}
+            <button type="button" class="btn-close" aria-label="Close"></button>
         </div>
     `;
 
     const alert = container.querySelector(".alert");
     const closeBtn = container.querySelector(".btn-close");
 
-    closeBtn.addEventListener("click", () => {
-        alert.classList.remove("show");
-        setTimeout(() => alert.remove(), 150);
-    });
+    closeBtn.onclick = () => alert.remove();
 
     setTimeout(() => {
-        if (alert) {
-            alert.classList.remove("show");
-            setTimeout(() => alert.remove(), 150);
-        }
-    }, 3000);
+        if (alert) alert.remove();
+    }, 4500);
 
     sessionStorage.removeItem("flash");
 }
@@ -91,18 +89,15 @@ async function renderAuthNav() {
 
     try {
         const response = await fetch("/auth/me", {
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
+            headers: { Authorization: `Bearer ${token}` }
         });
 
-        if (!response.ok) throw new Error("Auth failed");
+        if (!response.ok) throw new Error();
 
         const user = await response.json();
-        localStorage.setItem("user_id", user.uid);
 
         authNav.innerHTML = `
-        <button class="btn btn-sm btn-outline-dark ms-2 btn-add">
+            <button class="btn btn-sm btn-outline-dark ms-2 btn-add">
                 <a class="nav-link" href="/new_listing.html">Add your home</a>
             </button>
             <span class="nav-link fw-semibold">
@@ -119,14 +114,7 @@ async function renderAuthNav() {
             window.location.href = "/";
         };
 
-    } catch (error) {
-        console.error("Auth nav error:", error);
+    } catch {
         localStorage.removeItem("access_token");
-
-        authNav.innerHTML = `
-            <a class="nav-link" href="/login.html">Login</a>
-        `;
     }
 }
-
-
